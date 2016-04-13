@@ -1,0 +1,27 @@
+{
+  "name": "@dbb/e",
+  "version": "0.0.1",
+  "description": "Node.js Pub/Sub event module",
+  "main": "e.js",
+  "scripts": {
+    "test": "./node_modules/.bin/jasmine-node --matchall test/*.js *.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DungBeetleBASH/e.git"
+  },
+  "keywords": [
+    "pub/sub",
+    "javascript",
+    "node.js"
+  ],
+  "author": "Pappa",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/DungBeetleBASH/e/issues"
+  },
+  "homepage": "https://github.com/DungBeetleBASH/e#readme",
+  "devDependencies": {
+    "jasmine-node": "^1.14.5"
+  }
+}
