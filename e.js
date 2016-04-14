@@ -104,7 +104,7 @@ module.exports = {
 	 * @method fire
 	 * @public
 	 * @param {String} eventName
-	 * @param {...*} [arguments] zero or more optional arguments
+	 * @param {...Mixed} [arguments] zero or more optional arguments
 	 */
 	fire: function (eventName) {
 		var args = [].slice.call(arguments, 1);
@@ -172,7 +172,7 @@ module.exports = {
 	 * @method getEvents
 	 * @public
 	 * @param {String} [eventName]
-	 * @return {Object || Array}
+	 * @return {Object|Array}
 	 */
 	getEvents: function (eventName) {
 		if (eventName) {
