@@ -1,2 +1,2 @@
 # e
-Pub/Sub event module
+Pub/Sub module for Node.js
