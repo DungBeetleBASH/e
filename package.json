@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/DungBeetleBASH/e#readme",
   "devDependencies": {
-    "jasmine-node": "^1.14.5"
+    "jasmine-node": "^1.14.5",
+    "sinon": "^1.17.3"
   }
 }
