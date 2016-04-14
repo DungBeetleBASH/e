@@ -1,6 +1,12 @@
 # e
 Pub/Sub module for Node.js
 
+[![Build Status](https://travis-ci.org/DungBeetleBASH/e.png)](https://travis-ci.org/DungBeetleBASH/e)
+
+## Installation
+
+`npm install @dbb/e`
+
 ## Docs
 
 * * *
