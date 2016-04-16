@@ -5,7 +5,8 @@ describe("@dbb/e tests", function() {
 
 	var func1,
 		func2,
-		eventMap;
+		eventMap,
+		ctx = {};
 
 	beforeEach(function() {
 		func1 = sinon.spy();
@@ -18,17 +19,40 @@ describe("@dbb/e tests", function() {
 	});
 
 	describe("on()", function() {
-		// TODO: context and once
 		it("Should populate the event map", function() {
 			e.on("someEvent", func1);
 			eventMap = e.getEvents();
 			expect(eventMap["someEvent"].length).toBe(1);
 			expect(eventMap["someEvent"][0].callback).toBe(func1);
 		});
+		it("Should populate the event map with a given context", function() {
+			e.on("someEvent", func1, ctx);
+			eventMap = e.getEvents();
+			expect(eventMap["someEvent"].length).toBe(1);
+			expect(eventMap["someEvent"][0].context).toBe(ctx);
+		});
+		it("Should populate the event map with a one time callback", function() {
+			e.on("someEvent", func1, null, true);
+			eventMap = e.getEvents();
+			expect(eventMap["someEvent"].length).toBe(1);
+			expect(eventMap["someEvent"][0].once).toBe(true);
+		});
 	});
 
 	describe("once()", function() {
-		// TODO: context
+		it("Should populate the event map with a one time callback", function() {
+			e.once("someEvent", func1);
+			eventMap = e.getEvents();
+			expect(eventMap["someEvent"].length).toBe(1);
+			expect(eventMap["someEvent"][0].once).toBe(true);
+		});
+		it("Should populate the event map with a given context", function() {
+			e.once("someEvent", func1, ctx);
+			eventMap = e.getEvents();
+			expect(eventMap["someEvent"].length).toBe(1);
+			expect(eventMap["someEvent"][0].context).toBe(ctx);
+		});
+		// TODO: ctx
 		it("Should remove the callback from the event map after it is fired and remove the event", function() {
 			e.once("someEvent", func1);
 			e.on("someOtherEvent", func2);
