@@ -58,7 +58,6 @@ describe("@dbb/e tests", function() {
 			expect(eventMap["someEvent"].length).toBe(1);
 			expect(eventMap["someEvent"][0].context).toBe(ctx);
 		});
-		// TODO: ctx
 		it("Should remove the callback from the event map after it is fired and remove the event", function() {
 			e.once("someEvent", func1);
 			e.on("someOtherEvent", func2);
@@ -81,6 +80,19 @@ describe("@dbb/e tests", function() {
 			expect(eventMap["someEvent"].length).toBe(1);
 			expect(eventMap["someEvent"][0].callback).toBe(func2);
 		});
+		it("Should call the registered function on a given context", function() {
+			var ctx = {
+					callCount: 0
+				},
+				updateCallCount = function () {
+					this.callCount++;
+				};
+			e.once("someEvent", updateCallCount, ctx);
+			e.fire("someEvent");
+			e.fire("someEvent");
+			e.fire("someEvent");
+			expect(ctx.callCount).toBe(1);
+		});
 	});
 
 	describe("fire()", function() {
@@ -91,6 +103,19 @@ describe("@dbb/e tests", function() {
 			eventMap = e.getEvents();
 			expect(func1.calledOnce).toBe(true);
 			expect(func2.calledOnce).toBe(true);
+		});
+		it("Should call the registered function on a given context", function() {
+			var ctx = {
+					callCount: 0
+				},
+				updateCallCount = function () {
+					this.callCount++;
+				};
+			e.on("someEvent", updateCallCount, ctx);
+			e.fire("someEvent");
+			e.fire("someEvent");
+			e.fire("someEvent");
+			expect(ctx.callCount).toBe(3);
 		});
 	});
 
