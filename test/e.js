@@ -37,6 +37,12 @@ describe("@dbb/e tests", function() {
 			expect(eventMap["someEvent"].length).toBe(1);
 			expect(eventMap["someEvent"][0].once).toBe(true);
 		});
+		it("Should not add a duplicate", function() {
+			e.on("someEvent", func1);
+			e.on("someEvent", func1);
+			eventMap = e.getEvents();
+			expect(eventMap["someEvent"].length).toBe(1);
+		});
 	});
 
 	describe("once()", function() {
