@@ -12,7 +12,7 @@ Pub/Sub module for Node.js
 
 * * *
 
-### on(eventName, callback, context, once) 
+### on(eventName, callback, [context], [once]) 
 
 Bind a callback to an event and an optional context
 
@@ -28,7 +28,7 @@ Bind a callback to an event and an optional context
 
 
 
-### once(eventName, callback, context) 
+### once(eventName, callback, [context]) 
 
 Bind a callback to an event and fire it only once
 
@@ -42,7 +42,7 @@ Bind a callback to an event and fire it only once
 
 
 
-### fire(eventName, arguments) 
+### fire(eventName, [...arguments]) 
 
 Call all callbacks bound to an event
 
@@ -54,7 +54,7 @@ Call all callbacks bound to an event
 
 
 
-### remove(eventName, callback, context) 
+### remove([eventName], [callback], [context]) 
 
 Remove an event handler from an event
 
@@ -74,7 +74,7 @@ If an eventName and event handlers are passed, remove event handlers with matchi
 
 
 
-### getEvents(eventName) 
+### getEvents([eventName]) 
 
 If debug is true: given an eventName, returns all event handlers associated with that event.
 With no event name passed, returns the whole event map.
