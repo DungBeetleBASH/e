@@ -77,7 +77,9 @@ If an eventName and event handlers are passed, remove event handlers with matchi
 ### getEvents([eventName]) 
 
 If debug is true: given an eventName, returns all event handlers associated with that event.
+
 With no event name passed, returns the whole event map.
+
 If debug is false: returns an empty object or array.
 
 **Parameters**
