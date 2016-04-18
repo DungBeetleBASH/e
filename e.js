@@ -197,14 +197,7 @@ module.exports = {
 			return eventMap[eventName] || [];
 		}
 		return eventMap;
-	},
-
-	/**
-	 * If true (or a value which evaluates to true) disable getEvents.
-	 * @member {Boolean} debug2
-	 * @public
-	 */
-	 debug2: false
+	}
 };
 
 /**
