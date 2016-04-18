@@ -1,6 +1,6 @@
 {
   "name": "@dbb/e",
-  "version": "0.0.7",
+  "version": "1.0.0",
   "description": "Pub/Sub module for Node.js",
   "main": "e.js",
   "scripts": {
