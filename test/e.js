@@ -106,6 +106,22 @@ describe("@dbb/e tests", function() {
 			expect(func1.calledOnce).toBe(true);
 			expect(func2.calledOnce).toBe(true);
 		});
+		it("Should call the registered function with one argument", function() {
+			var arg = {};
+			e.on("someEvent", func1);
+			e.fire("someEvent", arg);
+			eventMap = e.getEvents();
+			expect(func1.getCall(0).args[0]).toBe(arg);
+		});
+		it("Should call the registered function with one argument", function() {
+			var arg = {},
+				arg2 = {};
+			e.on("someEvent", func1);
+			e.fire("someEvent", arg, arg2);
+			eventMap = e.getEvents();
+			expect(func1.getCall(0).args[0]).toBe(arg);
+			expect(func1.getCall(0).args[1]).toBe(arg2);
+		});
 		it("Should call the registered function on a given context", function() {
 			var ctx = {
 					callCount: 0
