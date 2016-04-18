@@ -11,11 +11,13 @@ describe("@dbb/e tests", function() {
 	beforeEach(function() {
 		func1 = sinon.spy();
 		func2 = sinon.spy();
-		e.removeAll();
+		e.remove();
 		eventMap = {};
+		e.debug = true;
 	});
 
 	afterEach(function() {
+		e.debug = false;
 	});
 
 	describe("on()", function() {
@@ -120,22 +122,73 @@ describe("@dbb/e tests", function() {
 	});
 
 	describe("remove()", function() {
-		it("", function() {
+		it("Should remove all events and event handlers", function() {
+			e.on("someEvent", func1);
+			e.on("someEvent", func2);
+			e.remove();
+			eventMap = e.getEvents();
+			expect(eventMap["someEvent"]).toBe(undefined);
 		});
-	});
-
-	describe("removeAllForEvent()", function() {
-		it("", function() {
+		it("Should remove all events and event handlers", function() {
+			e.on("someEvent", func1);
+			e.remove("someEvent");
+			eventMap = e.getEvents();
+			expect(eventMap["someEvent"]).toBe(undefined);
 		});
-	});
-
-	describe("removeAll()", function() {
-		it("", function() {
+		it("Should remove only one event handler", function() {
+			e.on("someEvent", func1);
+			e.on("someEvent", func2);
+			e.remove("someEvent", func1);
+			eventMap = e.getEvents();
+			expect(eventMap["someEvent"].length).toBe(1);
+			expect(eventMap["someEvent"][0].callback).toBe(func2);
+		});
+		it("Should remove only one event handler with a matching context", function() {
+			var ctx = {},
+				ctx2 = {};
+			e.on("someEvent", func1, ctx);
+			e.on("someEvent", func1, ctx2);
+			e.remove("someEvent", func1, ctx);
+			eventMap = e.getEvents();
+			expect(eventMap["someEvent"].length).toBe(1);
+			expect(eventMap["someEvent"][0].callback).toBe(func1);
+			expect(eventMap["someEvent"][0].context).toBe(ctx2);
+		});
+		it("Should remove only one event handler with no context", function() {
+			var ctx = {};
+			e.on("someEvent", func1, ctx);
+			e.on("someEvent", func1);
+			e.remove("someEvent", func1);
+			eventMap = e.getEvents();
+			expect(eventMap["someEvent"].length).toBe(1);
+			expect(eventMap["someEvent"][0].callback).toBe(func1);
+			expect(eventMap["someEvent"][0].context).toBe(ctx);
 		});
 	});
 
 	describe("getEvents()", function() {
-		it("", function() {
+		it("Should return an empty object", function() {
+			e.on("someEvent", func1);
+			e.debug = false;
+			eventMap = e.getEvents();
+			expect(eventMap["someEvent"]).toBe(undefined);
+			expect(e.debug).toBe(false);
+		});
+		it("Should return an empty array", function() {
+			e.on("someEvent", func1);
+			e.debug = false;
+			eventMap = e.getEvents("someEvent");
+			expect(Array.isArray(eventMap)).toBe(true);
+			expect(eventMap.length).toBe(0);
+			expect(e.debug).toBe(false);
+		});
+		it("Should return an event map", function() {
+			e.on("someEvent", func1);
+			e.debug = true;
+			eventMap = e.getEvents();
+			expect(eventMap["someEvent"].length).toBe(1);
+			expect(eventMap["someEvent"][0].callback).toBe(func1);
+			expect(e.debug).toBe(true);
 		});
 	});
 

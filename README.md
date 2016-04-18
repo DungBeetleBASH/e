@@ -58,6 +58,12 @@ Call all callbacks bound to an event
 
 Remove an event handler from an event
 
+If no eventName is passed, remove all events and event handlers.
+
+If an eventName but no event handlers is passed, remove all event handlers for that event and remove the event.
+
+If an eventName and event handlers are passed, remove event handlers with matching eventName and context.
+
 **Parameters**
 
 **eventName**: `String`
@@ -68,33 +74,23 @@ Remove an event handler from an event
 
 
 
-### removeAllForEvent(eventName) 
-
-Remove all event handlers from an event
-by removing the event from the eventMap.
-
-**Parameters**
-
-**eventName**: `String`
-
-
-
-### removeAll() 
-
-Removes all events and event handlers from the eventMap.
-
-
-
 ### getEvents(eventName) 
 
-Given an eventName, returns all event handlers associated with that event.
+If debug is true: given an eventName, returns all event handlers associated with that event.
 With no event name passed, returns the whole event map.
+If debug is false: returns an empty object or array.
 
 **Parameters**
 
 **eventName**: `String`
 
 **Returns**: `Object | Array`
+
+
+
+### debug `Boolean`
+
+If true (or a value which evaluates to true) enable getEvents().
 
 
 

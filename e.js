@@ -1,5 +1,6 @@
 "use strict";
-var eventMap = {};
+var eventMap = {},
+	isDebug = false;
 
 /**
  * @method isDuplicate
@@ -43,6 +44,28 @@ function fireCallbacks(eventName, args) {
 }
 
 /**
+ * Remove all event handlers from an event
+ * by removing the event from the eventMap.
+ * @method removeAllForEvent
+ * @private
+ * @param {String} eventName
+ */
+function removeAllForEvent(eventName) {
+	if (eventMap[eventName]) {
+		delete eventMap[eventName];
+	}
+}
+
+/**
+ * Removes all events and event handlers from the eventMap.
+ * @method removeAll
+ * @private
+ */
+function removeAll() {
+	eventMap = {};
+}
+
+/**
  * @method removeOnceCallbacks
  * @private
  * @param {String} eventName
@@ -51,6 +74,10 @@ function removeOnceCallbacks(eventName) {
 	eventMap[eventName] = eventMap[eventName].filter(function (eventHandler) {
 		return (!eventHandler.once);
 	});
+
+	if (!eventMap[eventName].length) {
+		removeAllForEvent(eventName);
+	}
 }
 
 /**
@@ -62,8 +89,12 @@ function removeOnceCallbacks(eventName) {
  */
 function removeCallback(eventName, callback, ctx) {
 	eventMap[eventName] = eventMap[eventName].filter(function (eventHandler) {
-		return (eventHandler.context !== ctx || eventHandler.callback !== callback);
+		return !(eventHandler.context === ctx && eventHandler.callback === callback);
 	});
+
+	if (!eventMap[eventName].length) {
+		removeAllForEvent(eventName);
+	}
 }
 
 module.exports = {
@@ -116,69 +147,76 @@ module.exports = {
 		fireCallbacks(eventName, args);
 
 		removeOnceCallbacks(eventName);
-
-		if (!eventMap[eventName].length) {
-			this.removeAllForEvent(eventName);
-		}
 	},
 
 	/**
-	 * Remove an event handler from an event
+	 * Remove one or more event handlers
+	 * If no eventName is passed, remove all events and event handlers.
+	 * If an eventName but no event handlers is passed, remove all event handlers for that event and remove the event.
+	 * If an eventName and event handlers are passed, remove event handlers with matching eventName and context.
 	 * @method remove
 	 * @public
-	 * @param {String} eventName
-	 * @param {Function} callback
+	 * @param {String} [eventName]
+	 * @param {Function} [callback]
 	 * @param {Object} [context] reference to the calling context
 	 */
 	remove: function (eventName, callback, context) {
 		var ctx = context || this;
 
+		if (!eventName) {
+			removeAll();
+			return;
+		}
+
 		if (!eventMap[eventName]) {
 			return;
 		}
 
+		if (!callback) {
+			removeAllForEvent(eventName);
+			return;
+		}
+
 		removeCallback(eventName, callback, ctx);
-
-		if (!eventMap[eventName].length) {
-			this.removeAllForEvent(eventName);
-		}
 	},
 
 	/**
-	 * Remove all event handlers from an event
-	 * by removing the event from the eventMap.
-	 * @method removeAllForEvent
-	 * @public
-	 * @param {String} eventName
-	 */
-	removeAllForEvent: function (eventName) {
-		if (eventMap[eventName]) {
-			delete eventMap[eventName];
-		}
-	},
-
-	/**
-	 * Removes all events and event handlers from the eventMap.
-	 * @method removeAll
-	 * @public
-	 */
-	removeAll: function () {
-		eventMap = {};
-	},
-
-	/**
-	 * Given an eventName, returns all event handlers associated with that event.
+	 * If debug is true: given an eventName, returns all event handlers associated with that event.
 	 * With no event name passed, returns the whole event map.
+	 * If debug is false: returns an empty object.
 	 * @method getEvents
 	 * @public
 	 * @param {String} [eventName]
 	 * @return {Object|Array}
 	 */
 	getEvents: function (eventName) {
+		if (!this.debug) {
+			return (eventName) ? [] : {};
+		}
 		if (eventName) {
 			return eventMap[eventName] || [];
 		}
 		return eventMap;
-	}
+	},
 
+	/**
+	 * If true (or a value which evaluates to true) disable getEvents.
+	 * @member {Boolean} debug2
+	 * @public
+	 */
+	 debug2: false
 };
+
+/**
+ * If true (or a value which evaluates to true) disable getEvents.
+ * @member {Boolean} debug
+ * @public
+ */
+Object.defineProperty(module.exports, 'debug', {
+	get: function() { 
+		return isDebug;
+	},
+	set: function (val) {
+		isDebug = !!(val);
+	}
+});
