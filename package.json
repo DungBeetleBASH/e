@@ -1,6 +1,6 @@
 {
   "name": "@dbb/e",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Pub/Sub module for Node.js",
   "main": "e.js",
   "scripts": {
@@ -16,7 +16,7 @@
     "node.js"
   ],
   "author": "Pappa",
-  "license": "MIT",
+  "license": "The Unlicense",
   "bugs": {
     "url": "https://github.com/DungBeetleBASH/e/issues"
   },
