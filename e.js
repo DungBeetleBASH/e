@@ -71,6 +71,10 @@ function removeAll() {
  * @param {String} eventName
  */
 function removeOnceCallbacks(eventName) {
+	if (!eventMap[eventName]) {
+		return;
+	}
+
 	eventMap[eventName] = eventMap[eventName].filter(function (eventHandler) {
 		return (!eventHandler.once);
 	});
