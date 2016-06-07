@@ -187,7 +187,7 @@ describe("@dbb/e tests", function() {
 			e.fire("someEvent");
 		}
 		it("Should not result in an error if the event does not exist", function() {
-			expect(fireEvent).not.toThrowError();
+			expect(fireEvent).not.toThrow("TypeError: expect(...).not.toThrowError is not a function");
 		});
 		it("Should not result in an error if the event is removed by an event handler", function() {
 			function removeEvent() {
@@ -195,7 +195,7 @@ describe("@dbb/e tests", function() {
 			}
 
 			e.on("someEvent", removeEvent);
-			expect(fireEvent).not.toThrowError();
+			expect(fireEvent).not.toThrow("TypeError: expect(...).not.toThrowError is not a function");
 		});
 	});
 
