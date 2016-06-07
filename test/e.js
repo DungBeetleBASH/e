@@ -182,6 +182,23 @@ describe("@dbb/e tests", function() {
 		});
 	});
 
+	describe("Firing non-existent events", function() {
+		function fireEvent() { 
+			e.fire("someEvent");
+		}
+		it("Should not result in an error if the event does not exist", function() {
+			expect(fireEvent).not.toThrowError();
+		});
+		it("Should not result in an error if the event is removed by an event handler", function() {
+			function removeEvent() {
+				e.remove("someEvent", removeEvent);
+			}
+
+			e.on("someEvent", removeEvent);
+			expect(fireEvent).not.toThrowError();
+		});
+	});
+
 	describe("getEvents()", function() {
 		it("Should return an empty object", function() {
 			e.on("someEvent", func1);
